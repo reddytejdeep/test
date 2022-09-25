@@ -16,12 +16,12 @@ spec:
     spec:
       containers:    
       - name: tomcat
-        image:  ovaledgellc/ovaledge:mck-betav38
+        image:  ovaledgellc/ovaledge:EKS-testeks
         env:
             - name: DRIVER_CLASS_NAME
               value: com.mysql.cj.jdbc.Driver
             - name: OVALEDGE_MYSQL_URL
-              value: "jdbc:mysql://mariadbfromohio-snapshot.cqss4ijtzasl.ap-south-1.rds.amazonaws.com:3306/ovaledgedb?useSSL=false"
+              value: "jdbc:mysql://database-1.cqss4ijtzasl.ap-south-1.rds.amazonaws.com:3306/ekstestdb?useSSL=false"
             - name: OVALEDGE_MYSQL_READ_URL
               value: jdbc:mysql://mariadbfromohioreplica.cqss4ijtzasl.ap-south-1.rds.amazonaws.com:3306/ovaledgedb?useSSL=false
             - name: OVALEDGE_MYSQL_USER
