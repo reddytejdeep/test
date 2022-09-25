@@ -1,0 +1,73 @@
+apiVersion: apps/v1 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: ovaledge-job-deployment
+  labels:
+    app: tomcat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tomcat
+  template:
+    metadata:
+      labels:
+        app: tomcat
+    spec:
+      containers:    
+      - name: tomcat
+        image:  ovaledgellc/ovaledge:mck-betav38
+        env:
+            - name: DRIVER_CLASS_NAME
+              value: com.mysql.cj.jdbc.Driver
+            - name: OVALEDGE_MYSQL_URL
+              value: "jdbc:mysql://mariadbfromohio-snapshot.cqss4ijtzasl.ap-south-1.rds.amazonaws.com:3306/ovaledgedb?useSSL=false"
+            - name: OVALEDGE_MYSQL_READ_URL
+              value: jdbc:mysql://mariadbfromohioreplica.cqss4ijtzasl.ap-south-1.rds.amazonaws.com:3306/ovaledgedb?useSSL=false
+            - name: OVALEDGE_MYSQL_USER
+              value: "ovaledge"
+            - name: OVALEDGE_MYSQL_PWORD
+              value: "0valEdge!"
+            - name: OVALEDGE_ENCRYPT_DECRYPT_KEY
+              value: ovaledge2021
+            - name: DB_MAX_CONNECTION
+              value: '1000'
+            - name: DB_MAX_IDLE
+              value: '500'
+            - name: READ_DB_MAX_CONNECTION
+              value: '1000'
+            - name: READ_DB_MAX_IDLE
+              value: '500'
+            - name: OVALEDGE_SAML_META_DATA
+              value: https://ovaledge-ma.okta.com/app/exkbqnqdbnfYdOJEe5d6/sso/saml/metadata
+            - name: OVALEDGE_SECURITY_TYPE
+              value: db
+            - name: SAML_METADATA_TYPE
+              value: url
+            - name: ENTITY_BASE_PROTOCOL
+              value: https
+            - name: ENTITY_BASE_HOST
+              value: fg.ovaledge.net
+            - name: ext.properties.dir
+              value: /usr/local/tomcat/conf/
+            - name: ENTITY_BASE_CONTEXTPATH
+              value: /ovaledge
+            - name: ENTITY_BASE_PORT
+              value: '443'
+            - name: ENTITY_BASE_PORT_INURL
+              value: 'false'
+            - name: ES_HOST
+              value: a35d3b3ad22fd4588a7d89941e45aff3-1285647164.ap-south-1.elb.amazonaws.com
+            - name: ES_PORT
+              value: '9200'
+            - name: ES_PROTOCOL
+              value: http
+            - name: ES_USERNAME
+              value: elastic
+            - name: ES_PASSWORD
+              value: ovaledge
+            - name: ENTITY_BASE_ISLB
+              value: 'false'
+            - name: entityBaseURL
+        ports:
+        - containerPort: 8080
